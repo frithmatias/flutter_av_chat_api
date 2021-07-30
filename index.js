@@ -24,5 +24,5 @@ require('./sockets/socket');
 //app.listen( process.env.PORT ,(err)=> {
 server.listen(process.env.PORT, (err) => {
     if (err) throw new Error(err);
-    console.log('Servidor corriendo en el puerto', 3000);
+    console.log('Servidor corriendo en el puerto', process.env.PORT);
 })
