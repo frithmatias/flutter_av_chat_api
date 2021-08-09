@@ -5,9 +5,7 @@ class Bands {
     }
 
     addBand(txBand){ // new Band() es parecido a un tipado pero en realidad está de mas.
-        console.log('NOMBRE', txBand);
         const band = new Band(txBand, 1);
-        console.log('banda:', band);
         this.bands.push(band);
     }
 
@@ -20,6 +18,7 @@ class Bands {
     }
 
     voteBand(id) {
+        console.log('votado', this.bands);
         this.bands = this.bands.map( band => {
             if ( band.id === id ) {
                 band.votes++;

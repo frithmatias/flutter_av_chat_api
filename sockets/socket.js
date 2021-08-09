@@ -3,12 +3,10 @@ const Bands = require('../controllers/bands.js');
 const Band = require('../models/band');
 const bands = new Bands();
 
-bands.addBand( 'Iron Maiden', 5);
-bands.addBand( 'Stratovarius');
-bands.addBand( 'Helloween');
-bands.addBand( 'Sonata Arctica');
-
-console.log(bands);
+// bands.addBand('Iron Maiden');
+// bands.addBand('Stratovarius');
+// bands.addBand('Helloween');
+// bands.addBand('Sonata Arctica');
 
 console.log('Inicializando servidor de sockets...');
 
@@ -30,6 +28,7 @@ io.on('connection', client => {
     });
 
     client.on('vote-band', (idBand) => {
+        console.log('votando', idBand);
         bands.voteBand(idBand);
         io.emit('bands-list', bands.getBands()); // envío a TODOS la lista actualizada
     })
