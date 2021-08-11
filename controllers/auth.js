@@ -16,8 +16,8 @@ const registerUser = async (req = request, res = response) => {
 
         // para obtener el email puedo destructurar el objeto JSON que me viene en el body 
         const { email, name, password } = req.body;
-
-        const userDB = await UserModel.findOne({ tx_email: email });
+        console.log(email, name, password);
+        const userDB = await UserModel.findOne({ txEmail: email });
         if(userDB){
             return res.status(400).json({
                 ok: false, 
@@ -29,21 +29,21 @@ const registerUser = async (req = request, res = response) => {
         // El email NO existe, procedo a guardarlo en la BD
         // req.body viene como un objeto json
         const usuario = new UserModel();
-        usuario.tx_email = email;
-        usuario.tx_name = name;
+        usuario.txEmail = email;
+        usuario.txName = name;
 
         // Encriptar contraseña 
         const salt = bcrypt.genSaltSync();
-        usuario.tx_password = bcrypt.hashSync(password, salt);
+        usuario.txPassword = bcrypt.hashSync(password, salt);
         await usuario.save();
    
         // Generar Token con JWT 
         const token = await generarJWT(usuario._id);
 
-
         res.status(200).json({
             ok: true, 
             msg: 'Usuario guardado correctamente', 
+            user: usuario,
             token
         });
 
@@ -51,7 +51,7 @@ const registerUser = async (req = request, res = response) => {
 
         res.status(500).json({
             ok: false, 
-            msg: 'Error',
+            msg: error,
             token: null
         })
     }
@@ -64,7 +64,7 @@ const loginUser = async (req = request, res = response) => {
     try {
 
         const { email, password } = req.body;
-        const userDB = await UserModel.findOne({ tx_email: email });
+        const userDB = await UserModel.findOne({ txEmail: email });
         
         if(!userDB){
             return res.status(400).json({
@@ -74,7 +74,7 @@ const loginUser = async (req = request, res = response) => {
             })
         }
 
-        if (!bcrypt.compareSync(password, userDB.tx_password)) {
+        if (!bcrypt.compareSync(password, userDB.txPassword)) {
             return res.status(400).json({
               ok: false,
               msg: "Contraseña incorrecta.",
@@ -87,6 +87,7 @@ const loginUser = async (req = request, res = response) => {
         res.status(200).json({
             ok: true, 
             msg: 'Usuario logueado correctamente', 
+            user: userDB,
             token
         });
 
@@ -103,27 +104,23 @@ const loginUser = async (req = request, res = response) => {
 
 
 const newToken = async (req = request, res = response ) => {
-
-
     try {
 
         const uid = req.uid;
-        console.log(uid);
         const token = await generarJWT(uid);
-        console.log(token);
         const userDB = await UserModel.findById(uid);
-    
+        
         res.status(200).json({
             ok: true, 
-            msg: 'Usuario logueado correctamente', 
+            msg: 'Token actualizado correctamente', 
             user: userDB,
             token
         });
 
     } catch(err) {
         
-        res.status(200).json({
-            ok: true, 
+        res.status(400).json({
+            ok: false, 
             msg: 'Error al renovar el token', 
             user: null,
             token: null
