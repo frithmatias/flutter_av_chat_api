@@ -18,7 +18,7 @@ const checkToken = (userToken) => {
     return new Promise((resolve, reject) => {
         jwt.verify(userToken, process.env.TOKEN_SEED, (err, decoded) => {
             if (err) {
-                reject(err);
+                reject(err.message);
             } else {
                 // decoded: { uid: '6111282e0c219608906d4c09', iat: 1628518348, exp: 1628604748 }
                 resolve(decoded);

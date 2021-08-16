@@ -7,7 +7,8 @@ const dbConnection = async () => {
         let resp = mongoose.connect(process.env.DB_CONN, {
             useNewUrlParser: true, 
             useUnifiedTopology: true, 
-            useCreateIndex: true 
+            useCreateIndex: true ,
+            useFindAndModify: false 
         })
         
         console.log('Conectado con Mongo Atlas');

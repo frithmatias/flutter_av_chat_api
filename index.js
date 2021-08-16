@@ -71,6 +71,10 @@ app.use(express.static(publicPath)); // monta mi servidor http en /public
 
 // API Rutas 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/messages', require('./routes/messages'));
+
+
 
 // Socket.io Server 
 // este paquete http de node es el MISMO que utiliza express para su instancia http , por lo tanto 

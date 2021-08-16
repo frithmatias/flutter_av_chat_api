@@ -5,7 +5,7 @@ class Band {
         this.id = uuidV4(); // uuid para id único
         this.name = name;
         this.votes = votes;
-        console.log(this.name, this.votes);
+        console.log(this.name, this.votes, this.id);
     }
 }
 

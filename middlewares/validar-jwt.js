@@ -3,7 +3,7 @@ const jwtHelper = require('../helpers/jwt');
 let verificaToken = (req, res, next) => {
 
     const userToken = req.header('x-token');
-
+    console.log('Verificando token:', userToken);
     if(!userToken){
         return res.status(400).json({
             ok: false, 
